@@ -78,6 +78,24 @@ module vcad_tz(z) {
 		}
 	}
 }
+/**
+ * Module: vcad_rz
+ * Rotate children from angle around Z axis.
+ * Parameters:
+ *   angle - rotation angle
+ *   center - rotation center
+ * Example:
+ * > vcad_rz(-15,[2.5,2.5]) cube([5,5,5]); // rotate around cube center
+ */
+module vcad_rz(angle, center=undef) {
+    translate(center)
+        rotate(angle)
+            translate(-center) {
+                for (i = [0 : $children-1]) {
+                    child(i);
+                }
+            }
+}
 
 /**
  * Module: vcad_multiple_spin
