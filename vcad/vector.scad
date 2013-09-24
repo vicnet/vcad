@@ -83,4 +83,4 @@ function vcad_norm(v) = sqrt(v*v);
  * Example:
  * > echo("Distance from [0,0] to ][1,1] is ", vcad_distance([[0,0],]1,1])); // outputs Distance from [0,0] to ][1,1] is 1.41421
  */
-function vcad_distance(a,b) = norm(a-b);
+function vcad_distance(a,b) = vcad_norm(a-b);
