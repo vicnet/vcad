@@ -9,7 +9,7 @@
  * File: constants.scad
  * Contains useful constants.
  * Example:
- * > include <vcad/transform.scad>
+ * > include <vcad/constant.scad>
  */
 
 /**
@@ -21,3 +21,13 @@ VCAD_EPSILON = 0.01;
 
 /// Constant: VCAD_PI
 VCAD_PI = 3.141592;
+
+/**
+ * Constants: axes
+ *   VCAD_X - X axe vector
+ *   VCAD_Y - Y axe vector
+ *   VCAD_Z - Z axe vector
+ */
+VCAD_X = [1,0,0];
+VCAD_Y = [0,1,0];
+VCAD_Z = [0,0,1];

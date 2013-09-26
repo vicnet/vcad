@@ -63,3 +63,19 @@ module vcad_spherical_cap(radius = 10, height = 4) {
 		}
 	}
 }
+
+/**
+ * Module: vcad_tore
+ * A tore, in Z axis within a max radius <outer> and
+ * a <inner> circle radius.
+ * Parameters:
+ *   outer - external radius
+ *   inner - circle radius
+ * Example:
+ * > vcad_tore(outer=20, inner=2);
+ */
+module vcad_tore(outer=20, inner=2) {
+	rotate_extrude()
+		vcad_tx(outer-inner)
+			circle(r=inner);
+}

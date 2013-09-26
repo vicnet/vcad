@@ -13,6 +13,9 @@
  * > use <vcad/transform.scad>
  */
 
+include <constants.scad>
+
+
 /**
  * Module: vcad_tr
  * Translate all children like translate but without vector parameter.
@@ -23,7 +26,7 @@
  * Example:
  * > vcad_tr(3,5) sphere(10);
  */
-module vcad_tr(x,y=0,z=0) {
+module vcad_tr(x=0,y=0,z=0) {
 	translate([x,y,z]) {
 		for (i = [0 : $children-1]) {
 			child(i);
@@ -99,17 +102,17 @@ module vcad_rz(angle, center=undef) {
 
 /**
  * Module: vcad_multiple_spin
- * Duplicate (or multiply) children along a circle centered at [0,0,0] and Z axis.
+ * Duplicate (or multiply) children along a circle centered at [0,0,0] and an axis (Z by default).
  * Parameters:
  *   n: number of duplication, must be >= 1.
  * Example:
  * > vcad_duplicate_circle(n=3) translate([10,0]) sphere(2, $fn=40);
  * Todo: transfert duplicate modules in an other scad file ?
  */
-module vcad_duplicate_circle(n=3) {
+module vcad_duplicate_circle(n=3, axe=VCAD_Z) {
 	if (n>=1) {
 		for (an=[0:n-1]) {
-			rotate(360*an/n) {
+			rotate(360*an/n,axe) {
 				for (i = [0 : $children-1]) {
 					child(i);
 				}
@@ -122,12 +125,12 @@ module vcad_duplicate_circle(n=3) {
 
 /**
  * Module: vcad_symetric
- * Duplicate children 2 times, around [0,0] and Z axis.
+ * Duplicate children 2 times, around [0,0] and an axis (Z by default).
  * Example:
  * > vcad_symetric() translate([10,0]) sphere(2, $fn=40);
  */
-module vcad_symetric() {
-	vcad_duplicate_circle(2) {
+module vcad_symetric(axe=VCAD_Z) {
+	vcad_duplicate_circle(n=2, axe=axe) {
 		for (i = [0 : $children-1]) {
 			child(i);
 		}
@@ -140,8 +143,8 @@ module vcad_symetric() {
  * Example:
  * > vcad_triple() translate([10,0]) sphere(2, $fn=40);
  */
-module vcad_triple() {
-	vcad_duplicate_circle(3) {
+module vcad_triple(axe=VCAD_Z) {
+	vcad_duplicate_circle(n=3, axe=axe) {
 		for (i = [0 : $children-1]) {
 			child(i);
 		}
