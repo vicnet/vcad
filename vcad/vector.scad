@@ -84,3 +84,19 @@ function vcad_norm(v) = sqrt(v*v);
  * > echo("Distance from [0,0] to ][1,1] is ", vcad_distance([[0,0],]1,1])); // outputs Distance from [0,0] to ][1,1] is 1.41421
  */
 function vcad_distance(a,b) = vcad_norm(a-b);
+
+/**
+ * Function: vcad_rotate2D
+ * Rotate a 2D vector with angle
+ * Parameters:
+ *   a - angle to rotate
+ *   v - vetor to rotate
+ * Returns:
+ *   The rotate vector
+ * Example:
+ * > echo("90° rotation of [1,0] is ", vcad_rotate2D([1,0])); // outputs 90° rotation of [1,0] is [0,-1]
+ */
+function vcad_rotate2D(a,v) =
+	[ [cos(a), -sin(a)],
+	  [sin(a),  cos(a)] ] * v;
+

@@ -15,11 +15,12 @@
 /**
  * Constant: VSCAD_VERSION
  * Current version of vcad library.
+ * Vector with year, month and day.
  * Example:
  * > echo("Version: ", VSCAD_VERSION);
  * Todo: add better use example for VSCAD_VERSION (test for example)
  */
-VSCAD_VERSION = [2013,09,20];
+VSCAD_VERSION = [2013,10,02];
 
 /**
  * Constants: Version parts
