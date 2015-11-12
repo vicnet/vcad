@@ -14,16 +14,11 @@
 
 
 /**
- * Module: vcad_blue()
+ * Module: vblue()
  * Blue color for children,
  * Example:
- * > vcad_blue() square([2,3]);
+ * > vblue() square([2,3]);
  */
-module vcad_blue() {
-	color("blue") {
-		for (i = [0 : $children-1]) {
-			child(i);
-		}
-	}
+module vblue() {
+    color("blue") children();
 }
-

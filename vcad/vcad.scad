@@ -13,30 +13,30 @@
  */
 
 /**
- * Constant: VSCAD_VERSION
+ * Constant: VVERSION
  * Current version of vcad library.
  * Vector with year, month and day.
  * Example:
- * > echo("Version: ", VSCAD_VERSION);
- * Todo: add better use example for VSCAD_VERSION (test for example)
+ * > echo("Version: ", VVERSION);
+ * Todo: add better use example for VVERSION (test for example)
  */
-VSCAD_VERSION = [2013,10,02];
+VVERSION = [2015,10,07];
 
 /**
  * Constants: Version parts
- * VSCAD_VERSION_YEAR  - year version part (XXXX)
- * VSCAD_VERSION_MONTH - month version part (1-12)
- * VSCAD_VERSION_DAY   - day version part (1-31)
+ * VVERSION_YEAR  - year version part (XXXX)
+ * VVERSION_MONTH - month version part (1-12)
+ * VVERSION_DAY   - day version part (1-31)
  */
-VSCAD_VERSION_YEAR = VSCAD_VERSION[0];
-VSCAD_VERSION_MONTH = VSCAD_VERSION[1];
-VSCAD_VERSION_DAY = VSCAD_VERSION[2];
+VVERSION_YEAR = VVERSION[0];
+VVERSION_MONTH = VVERSION[1];
+VVERSION_DAY = VVERSION[2];
 
 /**
- * Constant: VSCAD_VERSION
+ * Constant: VVERSION
  * Current version of vcad library in numeric form.
  * Example:
- * > echo("Version: ", VSCAD_VERSION_NUM);
- * Todo: add better use example for VSCAD_VERSION_NUM (test for example)
+ * > echo("Version: ", VVERSION_NUM);
+ * Todo: add better use example for VVERSION_NUM (test for example)
  */
-VSCAD_VERSION_NUM = VSCAD_VERSION * [100*100, 100, 1];
+VVERSION_NUM = VVERSION * [100*100, 100, 1];

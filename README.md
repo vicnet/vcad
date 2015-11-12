@@ -12,13 +12,13 @@ tested features (constants, functions or modules).
 Each features is:
 - documented (with Natural Docs)
 - tested (TBD)
-- presented with example
+- presented with examples
 
 Code rules
 ----------
 
-Every features start with `vcad_` or `VCAD_`.
-(I hope to introduce namespace in OpenSCAD language one day...)
+Every features start with ~~`vcad_` or `VCAD_`~~ `v` or `V`.
+(I hope to introduce namespace in OpenSCAD language one day and then use `vcad` namespace...)
 This ovoid conflict with existing library.
 
 A constant is capitalized, and starts with VCAD_.
@@ -37,16 +37,17 @@ Contents
 - vcad
 - constants
 - shapes
+- math
+- colors
+- figures
+- transform
+- vector
+- matrix
+- utilities
 
 ### Not yet released
 (and never perhaps :-) )
 
-- utilities
 - units
-- constants
-- math
 - layout
 - multiply
-- tranform
-- vector
-- matrix

@@ -13,11 +13,13 @@
  */
 
 include <constants.scad>
+include <utilities.scad>
 include <math.scad>
 include <transform.scad>
+include <matrix.scad>
 
 /**
- * Module: vcad_tube
+ * Module: vtube
  * A cylinder with a hole.
  * Tube is centered in Z axis, and depends of 'center' for XY position
  * Parameters:
@@ -28,54 +30,104 @@ include <transform.scad>
  *                 true: center on [0,0,0]
  *                 false: layed on XY plane
  * Example:
- * > vcad_tube(height=10, radius=5, thickness=2);
+ * > vtube(height=10, radius=5, thickness=2);
  */
-module vcad_tube(height = 10, radius = 5, thickness = 2, center = false) {
-	difference() {
-		cylinder(h = height, r = radius, center = center);
-		// the hole is epsion bigger
-		vcad_tz(-VCAD_EPSILON) {
-			cylinder(h=height+2*VCAD_EPSILON, r = radius-thickness, center=center);
-		}
-	}
+module vtube(height = 10, radius = 5, thickness = 2, center = false) {
+    difference() {
+        cylinder(h = height, r = radius, center = center);
+        // the hole is epsion bigger
+        vtz(-VEPSILON) {
+            cylinder(h=height+2*VEPSILON, r = radius-thickness, center=center);
+        }
+    }
 }
 
 /**
- * Module: vcad_spherical_cap
+ * Module: vspherical_cap
  * A spherical cap, ie sphere cut by a plane.
  * Cap is centered in Z axis, and leyed in XY plane.
  * Parameters:
  *   radius - radius of the cap base
  *   height - height of the cap
  * Example:
- * > vcad_spherical_cap(radius=10, height=4);
+ * > vspherical_cap(radius=10, height=4);
  */
-module vcad_spherical_cap(radius = 10, height = 4) {
-	// global sphere radius from parameters
-	sphere_radius = (vcad_sq(radius) +vcad_sq(height))/(2*height);
-	// a cut sphere
-	vcad_tz(-sphere_radius+height) {
-		difference() {
-			sphere(sphere_radius);
-			vcad_tz(-height) {
-				cube(2*sphere_radius,true);
-			}
-		}
-	}
+module vspherical_cap(radius = 10, height = 4) {
+    // global sphere radius from parameters
+    sphere_radius = (vsq(radius) +/*v*/vsq(height))/(2*height);
+    // a cut sphere
+    vtz(-sphere_radius+height) {
+        difference() {
+            sphere(sphere_radius);
+            vtz(-height) {
+                cube(2*sphere_radius,true);
+            }
+        }
+    }
 }
 
 /**
- * Module: vcad_tore
+ * Module: vtore
  * A tore, in Z axis within a max radius <outer> and
  * a <inner> circle radius.
  * Parameters:
  *   outer - external radius
  *   inner - circle radius
  * Example:
- * > vcad_tore(outer=20, inner=2);
+ * > vtore(outer=20, inner=2);
  */
-module vcad_tore(outer=20, inner=2) {
-	rotate_extrude()
-		vcad_tx(outer-inner)
-			circle(r=inner);
+module vtore(outer=20, inner=2) {
+    rotate_extrude()
+        vtx(outer-inner)
+            circle(r=inner);
+}
+
+/**
+ * Constants: VARROW_D
+ * Default value for arrow diameter.
+ */
+VARROW_D = 0.3;
+
+/**
+ * Module: vbase_arrow
+ * A arrow with total height of <h> with diameter of <d>
+ * and cone height or <a> starting et O and along Z.
+ * Parameters:
+ *   h - total heigth on Z
+ *   d - rod diameter (default: VARROW_D)
+ *   cone_h - arrow cone heigth (default: 3*<d>)
+ *   cone_d - arrow cone base diameter (default: 2*<d>)
+ * Example:
+ * > vbase_arrow(10);
+ */
+module vbase_arrow(h, d=VARROW_D, cone_h=undef, cone_d=undef) {
+    cd = vopt(cone_d, d*2); // cone diameter
+    ch = min(h, vopt(cone_h, d*3)); // cone heigth
+    ih = max(0,h-ch); // intermediate h
+    cylinder(ih,d=d);
+    vtz(ih) cylinder(ch, d1=cd, d2=0);
+}
+
+/**
+ * Module: varrow
+ * A arrow with total height of <h_v> with diameter of <d>
+ * and cone height or <a>. If <h_v> is a integer, it is a
+ * height along Z, else along the given vector.
+ * Parameters:
+ *   h_v - total heigth on Z or vector
+ *   d - rod diameter (default: 1)
+ *   cone_h - arrow cone heigth (default: 3)
+ *   cone_d - arrow cone base diameter (default: 2*<d>)
+ * Example:
+ * > varrow(10);
+ */
+module varrow(h_v, d=VARROW_D, cone_h=undef, cone_d=undef) {
+    if (visnum(h_v)) {
+        // scalar
+        vbase_arrow(h_v, d, cone_h, cone_d);
+    } else {
+        h = norm(h_v);
+        vrotate(h_v)
+            vbase_arrow(h, d, cone_h, cone_d);
+    }
 }

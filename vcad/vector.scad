@@ -14,66 +14,113 @@
 
 
 /**
- * Constant: VCAD_ZERO_VECTORS
- * Array of null vectors (vector with only 0) by dimention size (2 is in plane, 3 is in 3D).
+ * Function: vect
+ * Return a vector of size <n> with same values <v1>.
+ * If <pos> is defined, set <v1> only at <pos>
+ * and set <v2> in other positions. 
+ * Parameters:
+ *  n   - size of the vector
+ *  v1  - a value (scalar or anything else)
+ *  pos - index where <v1> will be set
+ *  v2  - value used to fill empty rooms
  * Example:
- * > echo("Null vector in 3D is ", VCAD_NULL_VECTORS[3]); // Outputs Null vector in 3D is [0,0,0]
+ * > echo(vect(5,0)); // [0,0,0,0,0]
+ * > echo(vect(4,2,3)); // [0,0,0,2]
  */
-VCAD_NULL_VECTORS = [
-		  []
-		, [0]
-		, [0,0]
-		, [0,0,0]
-		, [0,0,0,0]
-	];
+function vect(n=3, v1=1, pos=undef, v2=0) =
+    pos==undef ? [ for (i = vrange(n)) v1 ]
+               : [ for (i = vrange(n)) i==pos ? v1 : v2 ];
 
 /**
- * Constant: VCAD_UNARY_VECTORS
+ * Constant: VNULL_VECTORS
+ * Array of null vectors (vector with only 0) by dimention size (2 is in plane, 3 is in 3D).
+ * Example:
+ * > echo(VNULL_VECTORS[3]); // outputs [0,0,0]
+ */
+VNULL_VECTORS = [
+          []
+        , [0]
+        , [0,0]
+        , [0,0,0]
+        , [0,0,0,0]
+    ];
+
+/**
+ * Function: vvnull
+ * Return a null vector of size <n>.
+ * Parameters:
+ *  n - size of the vector
+ * Example:
+ * > echo("vvnull(5)); // [0,0,0,0,0]
+ */
+function vvnull(n) = vect(n,0);
+
+/**
+ * Constant: VUNARY_VECTORS
  * Array of unary vectors (vector with only 1) by dimention size (2 is in plane, 3 is in 3D).
  * Could be useful of vector calculation.
  * Example:
- * > echo("Unary vector in 3D is ", VCAD_UNARY_VECTORS[3]); // Outputs Unary vector in 3D is [1,1,1]
+ * > echo("Unary vector in 3D is ", VUNARY_VECTORS[3]); // Outputs Unary vector in 3D is [1,1,1]
  */
-VCAD_UNITARY_VECTORS = [
-		  []
-		, [1]
-		, [1,1]
-		, [1,1,1]
-		, [1,1,1,1]
-		, [1,1,1,1,1]
-	];
+VUNITARY_VECTORS = [
+          []
+        , [1]
+        , [1,1]
+        , [1,1,1]
+        , [1,1,1,1]
+        , [1,1,1,1,1]
+    ];
 
 /**
- * Function: vcad_sum
+ * Function: vvunary
+ * Return a unary vector of size n (all 1).
+ * Parameters:
+ *  n - size of the vector
+ * Example:
+ * > echo("vvunary(5)); // [1,1,1,1,1]
+ */
+function vvunary(n=3) = vect(n,1);
+
+/**
+ * Function: vvunit
+ * Return a vector of size <n> with a one at <pos>.
+ * Parameters:
+ *  n - size of the vector
+ *  pos - position of one (0 based)
+ * Example:
+ * > echo(vvunit(5)); // [0,1,0,0,0]
+ */
+function vvunit(n=3,pos=0) = vect(n,1,pos,0);
+
+/**
+ * Function: vsum
  * Returns the sum of each vector (or matrix) elements.
  * Remark: size of 'parameter v' is limited to 5 elements.
  * Parameters:
  *   v - a vector or a matrix.
  * Returns:
  *   A scalar, the sum of each elemetns,of a vector, the vectorial sum of each matrix vector.
- *   or undef if dimention is greater than VCAD_UNITARY_VECTORS size.
+ *   or undef if dimention is greater than VUNITARY_VECTORS size.
  * Example:
- * > echo("Sum of [1,1,1,1,1] is ", vcad_sum([1,1,1,1,1])); // Sum of [1,1,1,1,1] is 5
+ * > echo("Sum of [1,1,1,1,1] is ", vsum([1,1,1,1,1])); // Sum of [1,1,1,1,1] is 5
  */
-function vcad_sum(v) =
-	  len(v)<=len(VCAD_UNITARY_VECTORS)
-	? v*VCAD_UNITARY_VECTORS[len(v)]
-	: undef;
+function vsum(v) = v*vvunary(len(v));
 
 /**
- * Function: vcad_norm
+ * Function: vnorm
  * Returns the norm  of a vector.
  * Parameters:
  *   v - vector to norm, any size.
  * Returns:
- *   A scalar, the vector's 'norm.
+ *   A scalar, the vector's norm.
  * Example:
- * > echo("Norm of [1,1] is ", vcad_norm([1,1])); // outputs Norm of [1,1] is 1.41421
+ * > echo("Norm of [1,1] is ", vnorm([1,1])); // outputs Norm of [1,1] is 1.41421
+ * Deprecated: use buildin 'norm' function.
  */
-function vcad_norm(v) = sqrt(v*v);
+function vnorm(v) = sqrt(v*v);
 
 /**
- * Function: vcad_distance
+ * Function: vdistance (vcad_dist)
  * Returns the distance of two vectors.
  * Parameters:
  *   a - first vector, any size.
@@ -81,22 +128,44 @@ function vcad_norm(v) = sqrt(v*v);
  * Returns:
  *   The vectorial distance from point a to b.
  * Example:
- * > echo("Distance from [0,0] to ][1,1] is ", vcad_distance([[0,0],]1,1])); // outputs Distance from [0,0] to ][1,1] is 1.41421
+ * > echo(vdistance([[0,0],]1,1])); // outputs 1.41421
  */
-function vcad_distance(a,b) = vcad_norm(a-b);
+function vdistance(a,b) = vnorm(a-b);
+function vdist(a,b) = vnorm(a-b);
 
 /**
- * Function: vcad_rotate2D
+ * Function: vdot
+ * Returns the dot product of 2 vectors.
+ * Parameters:
+ *   a - first vector, any size.
+ *   b - second vector, same size as a.
+ * Remarks: just a alias to * operator.
+ * Example:
+ * > echo(vdot([1,1], [2,2])); outputs 4
+ */
+function vdot(a,b) = a*b;
+
+/**
+ * Function: vnormalize
+ * Returns vector normlized.
+ * Parameters:
+ *   v - vector, any size, to be normalized..
+ * Example:
+ * > echo(vnormalize([1,1]); outputs [0.707107, 0.707107]
+ */
+function vnormalize(v) = v/norm(v);
+
+/**
+ * Function: vrotate2d
  * Rotate a 2D vector with angle
  * Parameters:
  *   a - angle to rotate
- *   v - vetor to rotate
+ *   v - vector to rotate
  * Returns:
  *   The rotate vector
  * Example:
- * > echo("90° rotation of [1,0] is ", vcad_rotate2D([1,0])); // outputs 90° rotation of [1,0] is [0,-1]
+ * > echo("90° rotation of [1,0] is ", vrotate2d([1,0])); // outputs 90° rotation of [1,0] is [0,-1]
  */
-function vcad_rotate2D(a,v) =
-	[ [cos(a), -sin(a)],
-	  [sin(a),  cos(a)] ] * v;
-
+function vrotate2d(a,v) =
+    [ [cos(a), -sin(a)],
+      [sin(a),  cos(a)] ] * v;

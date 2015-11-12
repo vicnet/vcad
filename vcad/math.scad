@@ -13,14 +13,14 @@
  */
 
 /**
- * Function: sq
+ * Function: vsq
  * Returns square value of a number or a vector.
  * Parameters:
  *   x  - value to find the square.
  * Returns:
- *   Tthe square of x.
+ *   The square of x.
  * Example:
- * echo("square of 2",vcad_sq(2)); // outputs 4
- * echo("square of [1,1]",vcad_sq([1,1])); // outputs 2, dot-product
+ * > echo("square of 2",vsq(2)); // outputs 4
+ * > echo("square of [1,1]",vsq([1,1])); // outputs 2, dot-product
  */
-function vcad_sq(x) = x*x;
+function vsq(x) = x*x;
