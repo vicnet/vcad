@@ -12,40 +12,29 @@
  * > use <vcad/figures.scad>
  */
 
+include <transform.scad>
 
 /**
  * Module: vsquare
  * A square that could be centered in x or y only,
  * and accept negative values for size.
+ * <center> is used for <centerx>, <centery> and <centerz> if undefined.
+ * <x>,<y> are used first.
+ * Then if <size> is a vector, it is completed to a be a 2D vector.
+ * If <size> is a scalar, it is used for all dimensions.
+ * Else 1 is used as default.
  * Parameters:
  *   size     - 2D vector (could contains negative values) or scalar
- *   center   - boolean, center in x and y
+ *   center   - boolean, center in x and y (default false)
  *   centerx  - boolean, center in x
  *   centery  - boolean, center in y
- * If center is defined, centerx and centery are ignored.
- * If size is a scalar, use same length fox each border.
+ *   x - X value
+ *   y - Y value
  * Example:
  * > vsquare(5, centerx=true);
  */
-module vsquare(size=[2,3], center=undef, centerx = false, centery = false) {
-    vsize = visnum(size) ? [size,size] : size;
-    // normalize size
-    nsize = [ [vsize[0]<0 ? -1 : 1, 0], [0, vsize[1]<0 ? -1 : 1]] * vsize;
-    ntrans = [ [vsize[0]<0 ? 1 : 0, 0], [0, vsize[1]<0 ? 1 : 0]] * vsize;
-    if (center==true) {
-        // nothing to do, just use normalized size
-        square(nsize,true);
-    } else if (center==false) {
-        // translate for normalized size
-        translate(ntrans)
-            square(nsize,center);
-    } else {
-        // translation matrix
-        mat = [ [centerx?1:0,0] , [0,centery?1:0] ];
-        // result translation for center the square
-        trans = - mat * vsize / 2;
-        translate(ntrans)
-            translate(trans)
-                square(nsize,center=false);
-    }
+module vsquare(size, center, centerx, centery, x, y) {
+    vsize = vpoint(size,x,y);
+    vcenter(vsize, center, centerx, centery)
+        square(vabs(vsize));
 }

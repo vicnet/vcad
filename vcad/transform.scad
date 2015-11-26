@@ -7,7 +7,7 @@
 
 /**
  * File: transform.scad
- * Contains useful geomerty transformation modules.
+ * Useful geometry transformation modules.
  * Some modules use transformation matrices from <multmatrix.scad>,
  * and define module with smae name.
  * Example:
@@ -16,6 +16,7 @@
 
 include <constants.scad>
 include <utilities.scad>
+include <multmatrix.scad>
 
 
 /**
@@ -31,7 +32,7 @@ include <utilities.scad>
  * Todo: if first parameter is a 2d vector, use second param or <z> as thirt coordinate
  */
 module vtr(x=0, y=0, z=0) {
-    v= visvect(x) ? x : [x,y,z];
+    v= vislist(x) ? x : [x,y,z];
     translate(v) children();
 }
 
@@ -70,6 +71,7 @@ module vty(y) {
 module vtz(z) {
     translate([0,0,z]) children();
 }
+
 /**
  * Module: vrz
  * Rotate children from <angle> around Z axis.
@@ -88,52 +90,18 @@ module vrz(angle, center=undef) {
 }
 
 /**
- * Module: vduplicate_circle
- * Duplicate (or multiply) children <n> times
- * along a circle centered at [0,0,0]
- * and an axis <axe> (Z by default).
+ * Module: vscale
+ * Scale with <s> or [<x>,<y>,<z>].
  * Parameters:
- *   n: number of duplication, must be >= 1.
- *   axe - symetry axe (default: Z)
+ *   s - global scaling, a scalar, vector (2d or 3d) or list of vector.
+ *   x - x scaling.
+ *   y - y scaling.
+ *   z - z scaling.
  * Example:
- * > vduplicate_circle(n=3) translate([10,0]) sphere(2, $fn=40);
- * Todo: transfert duplicate modules in an other scad file ?
+ * > 
  */
-module vduplicate_circle(n=4, axe=VZ) {
-    if (n>=1) {
-        for (an=vrange(n)) {
-            rotate(360*an/n, axe)
-                children();
-        }
-    } else {
-        echo("ERROR: vduplicate_circle: parameter n shoud be greater or equal to 1.");
-    }
-}
-
-/**
- * Module: vsymetric
- * Duplicate children 2 times, around [0,0]
- * and an axis <axe> (Z by default).
- * Parameter:
- *   axe - symetry axe (default: Z)
- * Example:
- * > vsymetric() translate([10,0]) sphere(2, $fn=40);
- */
-module vsymetric(axe=VZ) {
-    vduplicate_circle(n=2, axe=axe) children();
-}
-
-/**
- * Module: vtriple
- * Duplicate children 3 times, around [0,0]
- * and axis <axe> (Z by default).
- * Parameter:
- *   axe - symetry axe (default: Z)
- * Example:
- * > vtriple() translate([10,0]) sphere(2, $fn=40);
- */
-module vtriple(axe=VZ) {
-    vduplicate_circle(n=3, axe=axe) children();
+module vscale(s=1, x=undef, y=undef, z=undef) {
+    multmatrix(vscale(s,x,y,z)) children();
 }
 
 /**
@@ -152,16 +120,35 @@ module vrotate(to, from=VZ) {
 /**
  * Module: vfollow
  * Move children to <p>
- * and rotate normal <n> to <v>.
+ * and rotate to <v>.
  * Parameters:
  *   v - normal
  *   p - position
- *   n - reference normal vector
+ *   s - scale (scalar)
+ *   t - twist (scalar)
  * Example:
  * > 
  */
-module vfollow(v, p=V0, n=VZ) {
-    multmatrix(vfollow(v,p,n)) children();
+module vfollow(v, p=V0, s=1, t=0) {
+    multmatrix(vfollow(v,p,s,t)) children();
+}
+
+/**
+ * Module: vcenter
+ * Center children from <size>.
+ * <size> could be a scalar or a vector.
+ * Parameters:
+ *   size     - scalar or vector (could contains negative values)
+ *   center   - boolean, center in X,Y and Z
+ *   centerx  - boolean, center in X
+ *   centery  - boolean, center in Y
+ * <center> is used for <centerx>, <centery> and <centerz> if undefined.
+ * If size is a scalar, use same length fox each dimension.
+ * Example:
+ * > 
+ */
+module vcenter(size, center, centerx, centery, centerz) {
+    multmatrix(vcenter(size, center, centerx, centery, centerz)) children();
 }
 
 /**
@@ -173,42 +160,10 @@ module vfollow(v, p=V0, n=VZ) {
  * > 
  */
 module vapply(ms) {
-    for (m=ms) multmatrix(m) children();
-}
-
-/**
- * Module: vhull2
- * Hull transformed children 2 by 2.
- * Parameters:
- *   ms - list of matrices.
- *   chamfer - hull intermediate chamfer.
- * Example:
- * > 
- */
-module vhull2(ms, chamfer=true) {
-    skip = chamfer ? 1 : 2;
-    for ( i = [ 0 : skip : len(ms)-2 ] )
-        hull() {
-            multmatrix(ms[i]) children();
-            multmatrix(ms[i+1]) children();
-        }
-}
-
-/**
- * Module: vextrude
- * Extrude along <pts>.
- * Parameters:
- *   pts - path to follow
- *   chamfer - chamfer type (default fill)
- * Returns:
- *   A list of transformation matrix.
- * Example:
- * > l=[V0,VX,VX+VY]*5
- * > vextrude(l,VCHAMFER_NO) sphere(1,$fn=15);
- * > vextrude(l,VCHAMFER_MID) cylinder(h=0.1,d=1);
- * > vextrude(l,VCHAMFER_2_EMPTY) cylinder(h=0.1,d=1);
- * > vextrude(l,VCHAMFER_2_FILL) cylinder(h=0.1,d=1);
- */
-module vextrude(pts, chamfer=VCHAMFER_2_FILL) {
-    vhull2(vextrude(pts,chamfer), chamfer!=VCHAMFER_2_EMPTY) children();
+    if (vlevel(ms)==2) {
+        // one matrix (same as multmatrix)
+        multmatrix(ms) children();
+    } else {
+        for (m=ms) vapply(m) children();
+    }
 }

@@ -14,8 +14,8 @@
 
 
 /**
- * Function: vect
- * Return a vector of size <n> with same values <v1>.
+ * Function: vvect
+ * Return a new vector of size <n> with same values <v1>.
  * If <pos> is defined, set <v1> only at <pos>
  * and set <v2> in other positions. 
  * Parameters:
@@ -24,10 +24,10 @@
  *  pos - index where <v1> will be set
  *  v2  - value used to fill empty rooms
  * Example:
- * > echo(vect(5,0)); // [0,0,0,0,0]
- * > echo(vect(4,2,3)); // [0,0,0,2]
+ * > echo(vvect(5,0)); // [0,0,0,0,0]
+ * > echo(vvect(4,2,3)); // [0,0,0,2]
  */
-function vect(n=3, v1=1, pos=undef, v2=0) =
+function vvect(n=3, v1=1, pos=undef, v2=0) =
     pos==undef ? [ for (i = vrange(n)) v1 ]
                : [ for (i = vrange(n)) i==pos ? v1 : v2 ];
 
@@ -53,7 +53,7 @@ VNULL_VECTORS = [
  * Example:
  * > echo("vvnull(5)); // [0,0,0,0,0]
  */
-function vvnull(n) = vect(n,0);
+function vvnull(n) = vvect(n,0);
 
 /**
  * Constant: VUNARY_VECTORS
@@ -79,7 +79,7 @@ VUNITARY_VECTORS = [
  * Example:
  * > echo("vvunary(5)); // [1,1,1,1,1]
  */
-function vvunary(n=3) = vect(n,1);
+function vvunary(n=3) = vvect(n,1);
 
 /**
  * Function: vvunit
@@ -90,7 +90,26 @@ function vvunary(n=3) = vect(n,1);
  * Example:
  * > echo(vvunit(5)); // [0,1,0,0,0]
  */
-function vvunit(n=3,pos=0) = vect(n,1,pos,0);
+function vvunit(n=3,pos=0) = vvect(n,1,pos,0);
+
+/**
+ * Fucntion: vvset
+ * Set a element of <v> with <x>.
+ * If <x> is a vector, len(<x>) elements of v
+ * are set by each elements of <x>.
+ * Parameters:
+ *   v - base vector
+ *   x - scalar or vector
+ * Returns:
+ *   v with elements replaced.
+ * Example:
+ * > echo(vvset([0,0],1)); // outputs [1,0]
+ * > echo(vvset([0,0,0],[1,2],1)); // outputs [0,1,2]
+ */
+function vvset(v, e, pos=0) =
+    visnum(e)
+        ? [ for (i=vindexes(v)) i==pos ? e : v[i] ]
+        : [ for (i=vindexes(v)) (i>=pos && i<pos+len(e)) ? e[i-pos] : v[i] ];
 
 /**
  * Function: vsum

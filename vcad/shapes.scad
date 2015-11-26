@@ -18,6 +18,33 @@ include <math.scad>
 include <transform.scad>
 include <matrix.scad>
 
+
+/**
+ * Module: vsquare
+ * A square that could be centered in x or y only,
+ * and accept negative values for size.
+ * <center> is used for <centerx>, <centery> and <centerz> if undefined.
+ * <x>,<y>,<z> are used first.
+ * Then if <size> is a vector, it is completed to a be a 3D vector.
+ * If <size> is a scalar, it is used for all dimensions.
+ * Else 1 is used as default.
+ * Parameters:
+ *   size     - 2D vector (could contains negative values) or scalar
+ *   center   - boolean, center in X,Y and Z
+ *   centerx  - boolean, center in X
+ *   centery  - boolean, center in Y
+ *   x - X value
+ *   y - Y value
+ *   z - Z value
+ * Example:
+ * > vsquare(5, centerx=true);
+ */
+module vcube(size, center, centerx, centery, centerz, x, y, z) {
+    vsize = vpoint(size,x,y,z);
+    vcenter(vsize, center, centerx, centery)
+        cube(vabs(vsize));
+}
+
 /**
  * Module: vtube
  * A cylinder with a hole.
@@ -112,7 +139,7 @@ module vbase_arrow(h, d=VARROW_D, cone_h=undef, cone_d=undef) {
  * Module: varrow
  * A arrow with total height of <h_v> with diameter of <d>
  * and cone height or <a>. If <h_v> is a integer, it is a
- * height along Z, else along the given vector.
+ * height along Z, else along the given vector <h_v>.
  * Parameters:
  *   h_v - total heigth on Z or vector
  *   d - rod diameter (default: 1)

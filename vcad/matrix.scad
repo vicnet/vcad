@@ -19,9 +19,10 @@
  * Example:
  * > echo(vmatrix(3,1)); // outputs [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
  */
-function vmatrix(n=3, v1=1, v2=0) = [ for (i=vrange(n)) [
-        for (j=vrange(n)) i==j ? v1 : v2 ]
-    ];
+function vmatrix(n=3, v1=1, v2=0) = [
+    for (i=vrange(n)) [
+        for (j=vrange(n))
+            i==j ? v1 : v2 ] ];
 
 /**
  * Function: vmnull

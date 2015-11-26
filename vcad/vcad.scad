@@ -20,7 +20,7 @@
  * > echo("Version: ", VVERSION);
  * Todo: add better use example for VVERSION (test for example)
  */
-VVERSION = [2015,10,07];
+VVERSION = [2015,11,26];
 
 /**
  * Constants: Version parts
