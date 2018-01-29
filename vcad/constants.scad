@@ -9,7 +9,7 @@
  * File: constants.scad
  * Contains useful constants.
  * Example:
- * > include <vcad/constant.scad>
+ * > include <vcad/constants.scad>
  */
 
 /**

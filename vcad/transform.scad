@@ -73,6 +73,21 @@ module vtz(z) {
 }
 
 /**
+ * Module: vrx
+ * Rotate children from <angle> around X axis.
+ * Parameters:
+ *   angle - rotation angle
+ * Example:
+ * > 
+ */
+module vrx(angle) {
+    multmatrix(vrx(angle)) children();
+}
+module vry(angle) {
+    multmatrix(vry(angle)) children();
+}
+
+/**
  * Module: vrz
  * Rotate children from <angle> around Z axis.
  * if <center> is defined, rotate around this point.

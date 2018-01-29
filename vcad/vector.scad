@@ -176,15 +176,15 @@ function vnormalize(v) = v/norm(v);
 
 /**
  * Function: vrotate2d
- * Rotate a 2D vector with angle
+ * Returns a 2D rotate matrix with angle
+ * Usage: `vrotate2d(a)*v`
  * Parameters:
  *   a - angle to rotate
- *   v - vector to rotate
  * Returns:
- *   The rotate vector
+ *   The rotate 2D matrix
  * Example:
- * > echo("90° rotation of [1,0] is ", vrotate2d([1,0])); // outputs 90° rotation of [1,0] is [0,-1]
+ * > echo("90° rotation of [1,0] is ", vrotate2d(90)*[1,0]); // outputs 90° rotation of [1,0] is [0,-1]
  */
-function vrotate2d(a,v) =
+function vrotate2d(a) =
     [ [cos(a), -sin(a)],
-      [sin(a),  cos(a)] ] * v;
+      [sin(a),  cos(a)] ];

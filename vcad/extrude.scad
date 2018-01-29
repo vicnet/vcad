@@ -114,7 +114,7 @@ module vextrude_dup(path, s=1, t=0, chamfer=true) {
  * > 
  */
 module vextrude_bezier3(path, s=1, t=0) {
-    vextrude_direct(vbezier3(path),s,t) children();
+    vextrude_direct(vbezier3(path),s,t,$fn=0) children();
 }
 
 /**
@@ -133,7 +133,7 @@ module vextrude_bezier3(path, s=1, t=0) {
  */
 module vextrude_bezier4(path, s=1, t=0, c=0.5) {
     ps = c==0 ? path : vcontrol(path,c);
-    vextrude_direct(vbezier4(ps),s,t) children();
+    vextrude_direct(vbezier4(ps),s,t,$fn=0) children();
 }
 
 /**

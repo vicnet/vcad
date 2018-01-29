@@ -16,21 +16,27 @@ Contents
 
 - vcad
 - constants
-- shapes
-- math
+- utilities
 - colors
-- figures
+- math
 - transform
 - vector
 - matrix
-- utilities
+- multmatrix
+- path
+- multpath
+- extrude
+- duplicate
+- figures
+- shapes
 
 ### Not yet released
 (and never perhaps :-) )
 
 - units
-- layout
-- multiply
+- layout/spread
+- multiply, repeat
+- spring
 
 Development
 -----------
@@ -56,7 +62,7 @@ Every features start with ~~`vcad_` or `VCAD_`~~ `v` or `V`.
 This ovoid conflict with existing library.
 
 A constant is capitalized, and starts with ~~`VCAD_`~~ `V`.
-A function or module name is in lowercase, with parts separate by _, and starts with ~~`vcad_`~~`v`.
+A function or module name is in lowercase, with parts separate by _, and starts with ~~`vcad_`~~ `v`.
 
 A file begin with a OpenSCAD version test, that echoes a error message
 if OpenSCAD version is too small for one include features.
@@ -70,3 +76,11 @@ Bad example: `cube_translated_and_rotated` could be easely replaced by vtr(...) 
 
 Parameters should be easy to set by user and multi-forms.
 Example: if a method need a point, the first param should be a scalar for z pos or a vector.
+
+### Todo
+
+- examples (inside doc and specific file)
+- tests (direct unit tests (with a tu lib) and image comparison)
+- help (help module, generated from docs ?)
+- compatibility version (with a `vscad.<version>.scad` ?)
+- using pseudo-namespace `vcad_` in additional file

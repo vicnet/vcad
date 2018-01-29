@@ -22,3 +22,13 @@
 module vblue() {
     color("blue") children();
 }
+
+/**
+ * Module: vred()
+ * Red color for children,
+ * Example:
+ * > vred() square([2,3]);
+ */
+module vred() {
+    color("red") children();
+}

@@ -16,6 +16,7 @@ include <constants.scad>
 include <multmatrix.scad>
 include <path.scad>
 include <multpath.scad>
+include <transform.scad>
 
 
 /**
@@ -93,7 +94,7 @@ module vduplicate_dup(path, s=1, t=0) {
  * > 
  */
 module vduplicate_bezier3(path, s=1, t=0) {
-    vduplicate_direct(vbezier3(path),s,t) children();
+    vduplicate_direct(vbezier3(path),s,t,$fn=0) children();
 }
 
 /**
@@ -112,7 +113,7 @@ module vduplicate_bezier3(path, s=1, t=0) {
  */
 module vduplicate_bezier4(path, s=1, t=0, c=0.5) {
     ps = c==0 ? path : vcontrol(path,c);
-    vduplicate_direct(vbezier4(ps),s,t) children();
+    vduplicate_direct(vbezier4(ps),s,t,$fn=0) children();
 }
 
 /**

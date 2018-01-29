@@ -37,11 +37,16 @@ include <vcad/path.scad>
  */
 function vfollow(v, o=V0, s=1, t=0) =
     vlevel(v)==1
+/*
+    ? let( r = norm(v), t2 = r>0 ? acos(v[2]/r) : 0
+         , p2 = v[0]!=0 ? atan(v[1]/v[0]) : 0, p3 = v[0]>=0?p2:180+p2 )
+      vtr(o) * vrz(p3)*vry(t2) * vscale(s) * vrz(t)
+*/
     ? let( l = norm(v), c = l>0 ? acos(v[2]/l) : 0
         , l2 = norm([v[0],v[1],0]), b = l2>0 ? acos(v[0]/l2) : 0 )
         vtr(o) * vrz(90+b*(v[1]>0?1:-1)) * vrx(c) * vscale(s) * vrz(t)
     : let( n=len(v), vs = visnum(s) ? [1,s] : s, ts = visnum(t) ? [0,t] : t )
-        [ for(i=vindexes(v)) vfollow(v[i], o[i], vlookup(i,vs,n), vlookup(i,ts,n)) ];
+      [ for(i=vindexes(v)) vfollow(v[i], o[i], vlookup(i,vs,n), vlookup(i,ts,n)) ];
 
 /**
  * Function: vfollow_simple
@@ -58,7 +63,8 @@ function vfollow(v, o=V0, s=1, t=0) =
  * > 
  */
 function vfollow_simple(path, s=1, t=0) =
-    let( ps = path, vs = vvect(len(ps),VZ) )
+    let( ps = $fn<=0 ? path : vcut(path)
+       , vs = vvect(len(ps),VZ) )
     vfollow(vs,ps,s,t);
 
 /**
@@ -76,8 +82,8 @@ function vfollow_simple(path, s=1, t=0) =
  * > 
  */
 function vfollow_direct(path, s=1, t=0) =
-    let( ps = path
-       , tvs = vsub2(path)
+    let( ps = $fn<=0 ? path : vcut(path)
+       , tvs = vsub2(ps)
        , last=velem(tvs,end=-1)
        , vs = concat(tvs,[last]) )
     vfollow(vs,ps,s,t);
@@ -136,7 +142,7 @@ function vfollow_dup(path, s=1, t=0) =
  * > 
  */
 function vfollow_bezier3(path, s=1, t=0) =
-    vextrude_direct(vbezier3(path),s,t);
+    vfollow_direct(vbezier3(path),s,t,$fn=0);
 
 /**
  * Function: vfollow_bezier4
@@ -151,8 +157,9 @@ function vfollow_bezier3(path, s=1, t=0) =
  * Example:
  * > 
  */
-function vfollow_bezier4(path, s=1, t=0) =
-    vextrude_direct(vbezier4(path),s,t);
+function vfollow_bezier4(path, s=1, t=0, c=0.5) =
+    let (ps = c==0 ? path : vcontrol(path,c))
+    vfollow_direct(vbezier4(ps),s,t,$fn=0);
 
 /**
  * Function: vfollow_rot

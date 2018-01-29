@@ -92,6 +92,20 @@ function vrx(a) =
         , [ 0,      0,       0, 1 ] ];
 
 /**
+ * Function: vry
+ * Returns a rotate matrix from <a> around Y axis.
+ * Parameters:
+ *   a - rotation angle
+ * Example:
+ * > echo(vry(-15)); // 
+ */
+function vry(a) = 
+        [ [ cos(a),  0,  sin(a), 0 ]
+        , [ 0,       1,       0, 0 ]
+        , [ -sin(a), 0,  cos(a), 0 ]
+        , [ 0,       0,       0, 1 ] ];
+
+/**
  * Function: vrz
  * Returns a rotate matrix from <a> around Z axis.
  * Parameters:

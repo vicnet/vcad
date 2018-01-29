@@ -14,6 +14,60 @@
 
 include <vcad/utilities.scad>
 
+/**
+ * Function: vcut_pt
+ * Returns a point along a vector at <t> with points <ps>
+ * after <start>.
+ * Result is <ps[start]> if <t> is 0.
+ * Result is <ps[start+1]> if <t> is 1.
+ * Parameters:
+ *   ps - path
+ *   t - position os result point
+ *   start - first point to use in path
+ * Returns:
+ *   A point.
+ * Example:
+ * > 
+ */
+function vcut_pt(ps, t, start=0) =
+    (1-t)*ps[start] + t*ps[start+1];
+
+/**
+ * Function: vcut_pts
+ * Returns <n> points along a vector with points <ps>
+ * after <start>.
+ * Result starts at <ps[start]> and end at <ps[start+1]>.
+ * Parameters:
+ *   ps - path
+ *   n - number of point to generate.
+ *   start - first point to use in path
+ * Returns:
+ *   A list of point.
+ * Example:
+ * > 
+ */
+function vcut_pts(ps, b, n, start=0) = [
+    for (i=[b:n])
+        let(t=i/n) vcut_pt(ps,t,start) ];
+
+/**
+ * Function: vcut
+ * Returns points along vector with points <ps>.
+ * Result starts at first point of <ps> and end at last
+ * point of <ps>
+ * $fn is used to calculate the number of cut on each
+ * path vector (default 10).
+ * Parameters:
+ *   ps - path
+ * Returns:
+ *   A list of point.
+ * Example:
+ * > 
+ */
+function vcut(ps) =
+    let(n = $fn<=0 ? 10 : $fn)
+    [ for (i=vindexes(ps,end=-1))
+        for (pt=vcut_pts(ps, i==0?0:1, n, i)) pt ];
 
 /**
  * Function: vbezier3_pt
