@@ -148,10 +148,12 @@ module vextrude_bezier4(path, s=1, t=0, c=0.5) {
  * Parameters:
  *   a - final angle
  *   r - translation radius (used first, then <d>)
+ *   d - translation diameter (used if <r> not defined)
  *   s - scale, scalar or list of scalar or list of vectors
+ *   h - total height of helix (default: 0 ie flat, no helix)
  * Example:
  * > 
  */
-module vextrude_rot(a=360, r, s=1, d) {
-    vhull2(vfollow_rot(a,r,s,d),true) children();
+module vextrude_rot(a=360, r, s=1, d, , n=VY, h=0) {
+    vhull2(vfollow_rot(a,r,s,d,n,h),true) children();
 }

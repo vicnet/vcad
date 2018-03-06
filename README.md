@@ -7,7 +7,9 @@ Purpose
 -------
 
 This is a OpenSCAD library, similar to MCAD, with useful, documented,
-tested features (constants, functions or modules).
+tested features and examples (constants, functions or modules).
+
+Add vcad directory (or symbolic link on linux) in OpenSCAD libraries directory.
 
 Contents
 --------

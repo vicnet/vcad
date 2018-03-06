@@ -1,6 +1,6 @@
 /*
  *  OpenSCAD vcad library (www.openscad.org)
- *  Copyright (C) 2013  Vicnet
+ *  Copyright (C) 2018  Vicnet
  *
  *  License: LGPL 3 or later
  */

@@ -42,7 +42,7 @@ module vduplicate_simple(path, s=1, t=0) {
  * direction).
  * Parameters:
  *   path - path to follow
- *   s - scale (scalar or vector or list of vector)
+ *   s - scale (scalar or vector or list of vectors)
  *   t - twist (scalar or vector)
  * Example:
  * > 
@@ -73,7 +73,7 @@ module vduplicate_middle(path, s=1, t=0) {
  * of each vector.
  * Parameters:
  *   path - path to follow
- *   s - scale (scalar or vector or list of vector)
+ *   s - scale (scalar or vector or list of vectors)
  *   t - twist (scalar or vector)
  * Example:
  * > 
@@ -88,7 +88,7 @@ module vduplicate_dup(path, s=1, t=0) {
  * with 1 control point between position points.
  * Parameters:
  *   path - path to follow
- *   s - scale (scalar or vector or list of vector)
+ *   s - scale (scalar or vector or list of vectors)
  *   t - twist (scalar or vector)
  * Example:
  * > 
@@ -105,7 +105,7 @@ module vduplicate_bezier3(path, s=1, t=0) {
  * are generated with this contraint (default).
  * Parameters:
  *   path - path to follow
- *   s - scale (scalar or vector or list of vector)
+ *   s - scale (scalar or vector or list of vectors)
  *   t - twist (scalar or vector)
  *   c - weight control
  * Example:
@@ -119,22 +119,24 @@ module vduplicate_bezier4(path, s=1, t=0, c=0.5) {
 /**
  * Module: vduplicate_rot
  * Duplicate children in rotation along Z from
- * 0 to <a> degree.
+ * 0 to <a> degrees.
  * Plane X,Y is reference, and Z is normal.
  * After scale <s>, a first <r> or <d> translation matrix
  * is applied then a rotation matrix around X is applied and
  * then final rotation around Z.
- * $fn could be used.
+ * $fn could be used as number of duplications.
  * Parameters:
  *   a - final angle
  *   r - translation radius (used first, then <d>)
+ *   d - translation diameter (used if <r> not defined)
  *   s - scale, scalar or list of scalar or list of vectors
  *   n - normal to use (default VY)
+ *   h - total height of helix (default: 0 ie flat, no helix)
  * Example:
  * > 
  */
-module vduplicate_rot(a=360, r, s=1, d, n=VY) {
-    vapply(vfollow_rot(a,r,s,d,n)) children();
+module vduplicate_rot(a=360, r, s=1, d, n=VY, h=0) {
+    vapply(vfollow_rot(a,r,s,d,n,h)) children();
 }
 
 /**

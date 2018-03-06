@@ -1,6 +1,6 @@
 /*
  *  OpenSCAD vcad library (www.openscad.org)
- *  Copyright (C) 2015  Vicnet
+ *  Copyright (C) 2018  Vicnet
  *
  *  License: LGPL 3 or later
  */
@@ -81,7 +81,7 @@ function vtz(z) = vtr(z=z);
  * Function: vrx
  * Returns a rotate matrix from <a> around X axis.
  * Parameters:
- *   a - rotation angle
+ *   a - rotation angle in degree
  * Example:
  * > echo(vrx(-15)); // 
  */
@@ -95,7 +95,7 @@ function vrx(a) =
  * Function: vry
  * Returns a rotate matrix from <a> around Y axis.
  * Parameters:
- *   a - rotation angle
+ *   a - rotation angle in degree
  * Example:
  * > echo(vry(-15)); // 
  */
@@ -109,7 +109,7 @@ function vry(a) =
  * Function: vrz
  * Returns a rotate matrix from <a> around Z axis.
  * Parameters:
- *   a - rotation angle
+ *   a - rotation angle in degree
  * Example:
  * > echo(vrz(-15)); // 
  */
@@ -154,7 +154,8 @@ function vscale(s=1, x, y, z) =
 
 /**
  * Function: vskew
- * Returns a transformation matrix skew-symetric cross product of a vector <v>.
+ * Returns a transformation matrix skew-symmetric cross product of a vector <v>.
+ * See https://en.wikipedia.org/wiki/Skew-symmetric_matrix
  * Remark: not really a transformation matrix but use in other transformation. 
  * Parameters:
  *  v - vector
@@ -172,7 +173,7 @@ function vskew(v) = [
 
 /**
  * Function: vrotation
- * Returns a transformation matrix to rotate <from> onto <to>.
+ * Returns a transformation matrix to rotate vector <from> onto vetor <to>.
  * <from> and <to> could be any vector.
  * Parameters:
  *  to - aim vector
