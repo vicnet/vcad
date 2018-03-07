@@ -86,3 +86,4 @@ Example: if a method need a point, the first param should be a scalar for z pos 
 - help (help module, generated from docs ?)
 - compatibility version (with a `vscad.<version>.scad` ?)
 - using pseudo-namespace `vcad_` in additional file
+- Natural Docs don't handle _Module_ keyword !

@@ -1,0 +1,4 @@
+Source Folder: vcad
+HTML Output Folder: html
+
+Title: VCad documentation

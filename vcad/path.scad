@@ -16,14 +16,13 @@ include <vcad/utilities.scad>
 
 /**
  * Function: vcut_pt
- * Returns a point along a vector at <t> with points <ps>
- * after <start>.
+ * Returns a point along a path <ps> at <t> percent after <start>.
  * Result is <ps[start]> if <t> is 0.
  * Result is <ps[start+1]> if <t> is 1.
  * Parameters:
- *   ps - path
- *   t - position os result point
- *   start - first point to use in path
+ *   ps - path (at min 2 points)
+ *   t - position of result point (double, from  0 to 1)
+ *   start - indix of first point to use in path (default: 0)
  * Returns:
  *   A point.
  * Example:

@@ -1,0 +1,4 @@
+Comment Type: Module
+   Plural: Modules
+   Keywords:
+      Module
