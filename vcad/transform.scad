@@ -157,6 +157,7 @@ module vfollow(v, p=V0, s=1, t=0) {
  *   center   - boolean, center in X,Y and Z
  *   centerx  - boolean, center in X
  *   centery  - boolean, center in Y
+ *   centerz  - boolean, center in Y
  * <center> is used for <centerx>, <centery> and <centerz> if undefined.
  * If size is a scalar, use same length fox each dimension.
  * Example:

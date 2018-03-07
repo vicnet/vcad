@@ -157,3 +157,27 @@ module vextrude_bezier4(path, s=1, t=0, c=0.5) {
 module vextrude_rot(a=360, r, s=1, d, , n=VY, h=0) {
     vhull2(vfollow_rot(a,r,s,d,n,h),true) children();
 }
+
+/**
+ * Module: vextrude_helix
+ * Extrude children along a helix of pitch <p> and height <h>
+ * around Z.
+ * Plane X,Y is reference, and Z is normal.
+ * After scale <s>, a first <r> or <d> translation matrix
+ * is applied then a rotation matrix around X is applied and
+ * then final rotation around Z.
+ * $fn could be used as number of matrices per turn.
+ * Parameters:
+ *   h - total height of helix (default: 5)
+ *   p - helix pitch, ie height of on turn
+ *   r - helix radius (used first, then <d>)
+ *   d - helix diameter (used if <r> not defined)
+ *   s - scale, scalar or list of scalar or list of vectors
+ *   a - final angle (if defined, replace <pitch>)
+ *   n - first object rotation normal vector
+ * Example:
+ * > 
+ */
+ module vextrude_helix(h=5, p=1, r, s=1, d, a, n=VZ) {
+    vhull2(vhelix(h,p,r,s,d,a,n),true) children();
+}

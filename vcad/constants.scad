@@ -8,6 +8,8 @@
 /**
  * File: constants.scad
  * Contains useful constants.
+ * Import file with 'include', not 'use'
+ * (don't import variables from imported file)
  * Example:
  * > include <vcad/constants.scad>
  */

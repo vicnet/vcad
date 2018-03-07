@@ -165,8 +165,8 @@ function vfollow_bezier4(path, s=1, t=0, c=0.5) =
 
 /**
  * Function: vfollow_rot
- * Returns a list of transformation matrix to extrude
- * in rotation along Z from 0 to <a> degree.
+ * Returns a list of transformation matrix
+ * of rotations along Z from 0 to <a> degrees.
  * Plane X,Y is reference, and Z is normal.
  * After scale <s>, a first <r> or <d> translation matrix
  * is applied then a rotation matrix around X is applied and
@@ -191,3 +191,33 @@ function vfollow_rot(a=360, r, s=1, d, normal=VY, h=0) =
        , r = vopt(r,d/2,0) )
     [ for (i = [0:n]) 
         vtz(h/n*i)*vrz(a/n*i)*vtx(r)*vrotate(normal)*vscale(vlookup(i,vs,n)) ];
+
+/**
+ * Function: vhelix
+ * Returns a list of transformation matrix of
+ * rotations along Z for a helix of pitch <p> and height <h>.
+ * Plane X,Y is reference, and Z is normal.
+ * After scale <s>, a first <r> or <d> translation matrix
+ * is applied then a rotation matrix around X is applied and
+ * then final rotation around Z.
+ * $fn could be used as number of matrices per turn.
+ * Parameters:
+ *   h - total height of helix (default: 5)
+ *   p - helix pitch, ie height of on turn
+ *   r - helix radius (used first, then <d>)
+ *   d - helix diameter (used if <r> not defined)
+ *   s - scale, scalar or list of scalar or list of vectors
+ *   a - final angle (if defined, replace <pitch>)
+ *   n - first object rotation normal vector
+ * Returns:
+ *   A list of transformation matrix for a helix
+ *   along Z.
+ * Example:
+ * > 
+ */
+function vhelix(h=5, p=1, r, s=1, d, a, n=VZ) =
+    let( nb = h/p // nb rotations
+       , a = vopt(a,360*nb) // total rotation angle
+       , fn = $fn<=0 ? 13*nb : $fn
+     )
+    vfollow_rot(a=a, r=r, s=s, d=d, normal=n, h=h, $fn=fn);

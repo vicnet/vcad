@@ -147,7 +147,7 @@ module vduplicate_rot(a=360, r, s=1, d, n=VY, h=0) {
  * > vsymetric() vtx(10) sphere(2, $fn=40);
  */
 module vsymetric() {
-    vduplicate_rot(n=VZ, $fn=2) children();
+    vduplicate_rot(n=VZ, $fn=1, a=180) children();
 }
 
 /**
@@ -157,5 +157,29 @@ module vsymetric() {
  * > vtriple() translate([10,0]) sphere(2, $fn=40);
  */
 module vtriple() {
-    vduplicate_rot(n=VZ, $fn=3) children();
+    vduplicate_rot(n=VZ, $fn=2, a=240) children();
+}
+
+/**
+ * Module: vhelix
+ * Duplicate children along a helix of pitch <p> and height <h>
+ * around Z.
+ * Plane X,Y is reference, and Z is normal.
+ * After scale <s>, a first <r> or <d> translation matrix
+ * is applied then a rotation matrix around X is applied and
+ * then final rotation around Z.
+ * $fn could be used as number of matrices per turn.
+ * Parameters:
+ *   h - total height of helix (default: 5)
+ *   p - helix pitch, ie height of on turn
+ *   r - helix radius (used first, then <d>)
+ *   d - helix diameter (used if <r> not defined)
+ *   s - scale, scalar or list of scalar or list of vectors
+ *   a - final angle (if defined, replace <pitch>)
+ *   n - first object rotation normal vector
+ * Example:
+ * > 
+ */
+module vhelix(h=5, p=1, r, s=1, d, a, n=VZ) {
+    vapply(vhelix(h,p,r,s,d,a,n)) children();
 }

@@ -20,8 +20,8 @@ include <matrix.scad>
 
 
 /**
- * Module: vsquare
- * A square that could be centered in x or y only,
+ * Module: vcube
+ * A cube that could be centered,
  * and accept negative values for size.
  * <center> is used for <centerx>, <centery> and <centerz> if undefined.
  * <x>,<y>,<z> are used first.
@@ -29,19 +29,20 @@ include <matrix.scad>
  * If <size> is a scalar, it is used for all dimensions.
  * Else 1 is used as default.
  * Parameters:
- *   size     - 2D vector (could contains negative values) or scalar
+ *   size     - 3D vector (could contains negative values) or scalar
  *   center   - boolean, center in X,Y and Z
  *   centerx  - boolean, center in X
  *   centery  - boolean, center in Y
+ *   centerz  - boolean, center in Z
  *   x - X value
  *   y - Y value
  *   z - Z value
  * Example:
- * > vsquare(5, centerx=true);
+ * > vcube(5, centerx=true);
  */
 module vcube(size, center, centerx, centery, centerz, x, y, z) {
     vsize = vpoint(size,x,y,z);
-    vcenter(vsize, center, centerx, centery)
+    vcenter(vsize, center, centerx, centery, centerz)
         cube(vabs(vsize));
 }
 
