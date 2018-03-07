@@ -29,7 +29,8 @@ include <transform.scad>
  *   s - scale (scalar or vector or list of vector)
  *   t - twist (scalar or vector)
  * Example:
- * > 
+ * > vduplicate_simple([[1,0,0],[0,0,5]])
+ * >   cube();
  */
 module vduplicate_simple(path, s=1, t=0) {
     vapply(vfollow_simple(path,s,t)) children();

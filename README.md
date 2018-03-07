@@ -52,10 +52,12 @@ Each features is:
 
 - scalar
 - point
+- position
 - vector
+- normal
 - matrix
 - list
-- path
+- path: list of absolute position
 
 ### Code rules
 

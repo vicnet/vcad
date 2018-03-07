@@ -61,7 +61,7 @@ function vcut_pts(ps, b, n, start=0) = [
  * Returns:
  *   A list of point.
  * Example:
- * > 
+ * > echo(vcut([0,1,5], $fn=2)); // [0, 0.5, 1, 3, 5]
  */
 function vcut(ps) =
     let(n = $fn<=0 ? 10 : $fn)

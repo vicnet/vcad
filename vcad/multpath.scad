@@ -24,7 +24,7 @@ include <vcad/path.scad>
  * Returns a transformation matrix to:
  * - twist by <t>,
  * - scale by <s>,
- * - rotate to <v>,
+ * - rotate to normal <v>,
  * - move to <o>.
  * Parameters:
  *   v - normal or vector of normals
@@ -64,8 +64,9 @@ function vfollow(v, o=V0, s=1, t=0) =
  * > 
  */
 function vfollow_simple(path, s=1, t=0) =
-    let( ps = $fn<=0 ? path : vcut(path)
-       , vs = vvect(len(ps),VZ) )
+    // TODO test if path is a simple vector
+    let( ps = $fn<=0 ? path : vcut(path) // path or path cut in $fn parts
+       , vs = vvect(len(ps),VZ) ) // normals set to Z
     vfollow(vs,ps,s,t);
 
 /**
