@@ -53,6 +53,8 @@ module vcube(size, center, centerx, centery, centerz, x, y, z) {
  * Parameters:
  *   height      - global cylinder height
  *   radius      - outter radius
+ *   r1          - bottom outter radius (radius if not set)
+ *   r2          - upper outter radius (radius if not set)
  *   thickness   - wall thickness
  *   center      - determine position of the object
  *                 true: center on [0,0,0]
@@ -60,12 +62,14 @@ module vcube(size, center, centerx, centery, centerz, x, y, z) {
  * Example:
  * > vtube(height=10, radius=5, thickness=2);
  */
-module vtube(height = 10, radius = 5, thickness = 2, center = false) {
+module vtube(height = 10, radius = 5, thickness = 2, r1, r2, center = false) {
+    r1 = vopt(r1,radius);
+    r2 = vopt(r2,radius);
     difference() {
-        cylinder(h = height, r = radius, center = center);
-        // the hole is epsion bigger
+        cylinder(h=height, r1=r1, r2=r2, center=center);
+        // the hole is epsilon bigger to avoid glitches on cylinder
         vtz(-VEPSILON) {
-            cylinder(h=height+2*VEPSILON, r = radius-thickness, center=center);
+            cylinder(h=height+2*VEPSILON, r1=r1-thickness, r2=r2-thickness, center=center);
         }
     }
 }
