@@ -12,6 +12,7 @@
  * > use <vcad/figures.scad>
  */
 
+include <points.scad>
 include <transform.scad>
 
 /**
@@ -36,5 +37,10 @@ include <transform.scad>
 module vsquare(size, center, centerx, centery, x, y) {
     vsize = vpoint(size,x,y);
     vcenter(vsize, center, centerx, centery)
-        square(vabs(vsize));
+        square(vabs([vsize.x,vsize.y]));
+}
+
+module varc(r=1, a=90) {
+    pts = varc(r,a);
+    polygon(pts);
 }

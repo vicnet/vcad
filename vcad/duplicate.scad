@@ -19,6 +19,10 @@ include <multpath.scad>
 include <transform.scad>
 
 
+module vduplicate(v,n=2,s=1,t=0) {
+    vduplicate_simple(vcut([V0,v], $fn=n), s=1, t=0) children();
+}
+
 /**
  * Module: vduplicate_simple
  * Duplicate children to follow <path> without change base

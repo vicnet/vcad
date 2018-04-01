@@ -15,6 +15,7 @@
 include <constants.scad>
 include <utilities.scad>
 include <math.scad>
+include <points.scad>
 include <transform.scad>
 include <matrix.scad>
 
@@ -162,4 +163,54 @@ module varrow(h_v, d=VARROW_D, cone_h=undef, cone_d=undef) {
         vrotate(h_v)
             vbase_arrow(h, d, cone_h, cone_d);
     }
+}
+
+/**
+ * Module: vreinfor
+ * A reinforcement brace with an arch.
+ * Global size is <size> or <x>/<y>/<z>.
+ * Arch is along X axis, and object us under negative Z.
+ * Reinforcement can be extended by <e> or <ex>/<ey> on x and y axis.
+ * Parameters:
+ *   size - global size (without extension)
+ *   x - x size (use before size.x)
+ *   y - y size (use before size.y)
+ *   z - z size (use before size.z)
+ *   e - extension in x,y
+ *   ex - extension in x (used before e.x)
+ *   ey - extension in y (used before e.y)
+ * Example:
+ * > vreinfor([10,1,5],e=1);
+ * openscad --imgsize=500,500 --camera=3,3,-4,70,0,50,40 -o image.png image.scad 
+ */
+module vreinfor(size, e=0, x,y,z, ex, ez) {
+    s = vpoint(size, x, y, z);
+    ex = vopt(ex,e);
+    ez = vopt(ez,e);
+    ns = s+[ex,0,ez];
+    vtz(-s.z)
+    difference() {
+        vtx(-ex)
+        vcube(ns,centery=true);
+//        resize(s)
+        scale([1,1,s.z/s.x])
+        vtx(s.x)
+        vrx(90) // rotation on XZ plane
+        cylinder(h=s.y+VEPSILON*2,r=s.x,$fn=30,center=true);
+    }
+}
+
+module vprism(size, center, centerx, centery, centerz, x, y, z) {
+    v = vislist(size[1]) ?
+          vpoint(size[0],x,y,z)
+        : vpoint(size,x,y,z);
+    h = vislist(size[1]) ?
+          vpoint(size[1],x,y,z)
+        : vpoint(size,x,y,z);
+    pts = concat(vsquare(v,z=0) // base 0-3
+               , [ [0,h.y/2,h.z],[v.x,h.y/2,h.z] ] // triangle 4,5
+            );
+    fcs = [[0,1,2,3],[5,4,3,2],[0,4,5,1],[0,3,4],[5,2,1]];
+    vcenter(v, center, centerx, centery, centerz)
+        polyhedron(points=pts, faces=fcs);
 }
