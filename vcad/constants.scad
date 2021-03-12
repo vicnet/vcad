@@ -42,3 +42,6 @@ VZ = [0,0,1];
  *   V0 - origin
  */
 V0 = [0,0,0];
+
+// unitary vector
+V1 = [1,1,1];

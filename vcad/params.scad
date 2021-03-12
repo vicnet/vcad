@@ -76,7 +76,7 @@ function vcenters(center=false, centerx, centery, centerz) =
 
 /**
  * Function: visdef
- * Returns if <param> is defined or not.
+ * Returns if <param> is defined.
  * Parameters:
  *   param - parameter to test.
  * Returns:
@@ -86,7 +86,21 @@ function vcenters(center=false, centerx, centery, centerz) =
  * > echo(visdef(5)); // outputs true
  * > echo(visdef([5])); // outputs true
  */
-function visdef(param) = param!=undef;
+function visdef(param) = !is_undef(param);
+
+/**
+ * Function: visundef
+ * Returns if <param> is not defined.
+ * Parameters:
+ *   param - parameter to test.
+ * Returns:
+ *   A boolean.
+ * Example:
+ * > echo(visundef(undef)); // outputs true
+ * > echo(visundef(5)); // outputs false
+ * > echo(visundef([5])); // outputs false
+ */
+function visundef(param) = is_undef(param);
 
 /**
  * Function: vislist
@@ -99,7 +113,7 @@ function visdef(param) = param!=undef;
  * > echo(vislist(5)); // outputs false
  * > echo(vislist([5])); // outputs true
  */
-function vislist(param) = len(param)!=undef;
+function vislist(param) = visdef(param) && is_list(param);
 
 /**
  * Function: visnum
@@ -112,4 +126,4 @@ function vislist(param) = len(param)!=undef;
  * > echo(visnum(5)); // outputs true
  * > echo(visnum([5])); // outputs false
  */
-function visnum(param) = len(param)==undef;
+function visnum(param) = visdef(param) && is_num(param);

@@ -166,7 +166,7 @@ function vbezier4_pts(ps, n, b=0, start=0) = [
 /**
  * Function: vbezier4
  * Returns points along bezier curve with points <ps>.
- * Result starts at first point of <ps> and end at last
+ * Result start at first point of <ps> and end at last
  * point of <ps>
  * 2 central points on 4 are control points.
  * $fn is used to calculate the number of iteration (default 10).

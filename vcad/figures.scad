@@ -40,6 +40,17 @@ module vsquare(size, center, centerx, centery, x, y) {
         square(vabs([vsize.x,vsize.y]));
 }
 
+module vsquare_rounded( size, r , center, centerx, centery) {
+    vcenter(size, center, centerx, centery)
+    hull() {
+        vtr(r, r) circle( r );
+        vtr(r, size.y - r) circle( r );
+        vtr(size.x - r, r) circle( r );
+        vtr(size.x - r, size.y - r) circle( r );
+    }
+}
+
+
 module varc(r=1, a=90) {
     pts = varc(r,a);
     polygon(pts);

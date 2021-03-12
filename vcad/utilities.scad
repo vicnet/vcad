@@ -20,16 +20,20 @@ include <params.scad>
  * Parameters:
  *   list - list to search
  *   pos - element pos
+ *   deflt - ??
+ *   end - ??
  * Returns:
  *  If <pos> under 0, first elem,
  *  if <pos> >= len(list) last elem,
  *  else element of <list> at <pos>.
  * Example:
- * > velem([1,2],0) // outputs 1
- * > velem([1,2],5) // outputs 2
+ * > velem([1,2],0); // outputs 1
+ * > velem([1,2],5); // outputs 2
  */
 function velem(list, pos, deflt, end) =
-    let(l=len(list), pos=vopt(pos,l+end))
+    let(l=vislist(list)?len(list):0
+      , e=visdef(end)?end:0
+      , pos=vopt(pos,l+e))
     visnum(list)
         ? (pos==0 ? list : vopt(deflt,list))
         : pos<0 ? vopt(deflt,list[0])
@@ -51,8 +55,8 @@ function velem(list, pos, deflt, end) =
  * > echo(vorder([ [1,0],[0,1] ])); // outputs [2,2]
  */
 function vorder(param) =
-    len(param)==undef
-        ? [] // scalar, no order
+    visnum(param) || visundef(param)
+        ? [] // scalar or undef, no order
         : concat([len(param)], vorder(param[0]));
 
 /**
@@ -205,3 +209,9 @@ function vlookup(i,v,n=1) =
     let( pos=(len(v)-1)*i/n, vi=floor(pos), t=pos-vi
        , start=velem(v,vi), end=velem(v,vi+1))
     vlinear(t, start, end);
+
+function v2dto3d(pts, z=0) =
+    [ for (pt = pts) [pt.x, pt.y, z] ];
+
+function v3dto2d(pts) =
+    [ for (pt = pts) [pt.x, pt.y] ];

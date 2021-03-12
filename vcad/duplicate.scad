@@ -114,7 +114,8 @@ module vduplicate_bezier3(path, s=1, t=0) {
  *   t - twist (scalar or vector)
  *   c - weight control
  * Example:
- * > 
+ * > vduplicate_bezier4([[0,0,0],[10,0,0],[10,10,0],[0,10,0]])
+ *     sphere($fn=25);
  */
 module vduplicate_bezier4(path, s=1, t=0, c=0.5) {
     ps = c==0 ? path : vcontrol(path,c);

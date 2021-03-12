@@ -98,6 +98,7 @@ module vry(angle) {
  * > vrz(-15,[2.5,2.5]) cube([5,5,5]); // rotate around cube center
  */
 module vrz(angle, center=undef) {
+    center = vopt(center, V0);
     translate(center)
         rotate(angle)
             translate(-center) 

@@ -48,6 +48,27 @@ module vcube(size, center, centerx, centery, centerz, x, y, z) {
 }
 
 /**
+ * Module: vcly
+ * A cylinder.
+ * The cylinder is centered in Z axis, and depends of 'center' for XY position
+ * Parameters:
+ *   height      - global cylinder height
+ *   radius      - outter radius
+ *   r1          - bottom outter radius (radius if not set)
+ *   r2          - upper outter radius (radius if not set)
+ *   center      - determine position of the object
+ *                 true: center on [0,0,0]
+ *                 false: layed on XY plane
+ * Example:
+ * > vcyl(height=10, radius=5);
+ */
+module vcyl(height = 10, radius = 5, r1, r2, center = false) {
+    r1 = vopt(r1,radius);
+    r2 = vopt(r2,radius);
+    cylinder(h=height, r1=r1, r2=r2, center=center);
+}
+
+/**
  * Module: vtube
  * A cylinder with a hole.
  * Tube is centered in Z axis, and depends of 'center' for XY position
@@ -95,6 +116,30 @@ module vspherical_cap(radius = 10, height = 4) {
             vtz(-height) {
                 cube(2*sphere_radius,true);
             }
+        }
+    }
+}
+
+/**
+ * Module: vtore_cap
+ * A half tore filled, in Z axis within a max radius <outer> and
+ * a <inner> circle radius (champfer).
+ * Parameters:
+ *   outer - external radius
+ *   inner - circle radius
+ * Example:
+ * > vtore_cap(outer=20, inner=2);
+ */
+module vtore_cap(outer=20, inner=2) {
+    cut_size = (outer+VEPSILON)*2;
+    intersection()
+    {
+        vcube([cut_size, cut_size, inner+VEPSILON], centerx=true, centery=true);
+        union() {
+            rotate_extrude()
+                vtx(outer-inner)
+                    circle(r=inner);
+            vcyl(inner*2, outer-inner, center=true);
         }
     }
 }
@@ -200,8 +245,19 @@ module vreinfor(size, e=0, x,y,z, ex, ez) {
     }
 }
 
+/**
+ * Module: vprism
+ * ...
+ * Parameters:
+ *   size - 2 vectors: base and top
+ *   x - x size (use before size.x)
+ *   y - y size (use before size.y)
+ *   z - z size (use before size.z)
+ * Example:
+ * > vprism(...);
+ */
 module vprism(size, center, centerx, centery, centerz, x, y, z) {
-    v = vislist(size[1]) ?
+    v = vislist(size[0]) ?
           vpoint(size[0],x,y,z)
         : vpoint(size,x,y,z);
     h = vislist(size[1]) ?
