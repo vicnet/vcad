@@ -239,3 +239,83 @@ function vcontrol(ps, c=0.5) =
           , [ for (i=vindexes(ps,start=1,end=-1))
                 for (pt=vcontrol_pts(ps, i-1, c)) pt ]
           , [last, last]);
+
+
+/**
+ * Extract corner at r
+ */
+function vcorner(pts, r) =
+    let(d1=vdist(pts[1],pts[0]), d2=vdist(pts[2],pts[1]))
+    let(r1 = vislist(r) ? r[0] : r, r2 = vislist(r) ? r[1] : r)
+    [
+          vlinear(1-r1/d1,pts[0],pts[1])
+        , pts[1]
+        , vlinear(r2/d2,pts[1],pts[2])
+    ];
+
+/**
+ * Returns the middle point of pts.
+ * To use with vround_path_base (and do nothing in fact).
+ */
+function vround_ident(pts, r) =
+    [ pts[1] ];
+
+/**
+ * Round the corners of a path 'pts' according to 'rs'.
+ * It use a round function applied on each corner
+ * that are defined.
+ * 'rs' is an array of radius. The radius could be:
+ * - 0: nothing is done.
+ * - a number: the corner starts r before and after.
+ * - a array of 2 radius: the corner start before
+ *   the first and end after the last radius.
+ * The round function has a array of 3 points and
+ * should give a array of points.
+ */
+function vround_path_base(pts, rs, round_func) =
+    let(f = vopt(round_func, function(pts) vround_ident(pts)))
+    [ for (i = vrange(len(pts))) each
+        rs[i]==0
+            ? [ pts[i] ]
+            : let(3pts=vcopy(pts,i-1,i+2), c=vcorner(3pts,rs[i]))
+              f(c)
+    ];
+
+/**
+ * Round a corner by cutting at the angle.
+ * Don't add start and end.
+ */
+function vround_cut(pts, r) =
+    [ pts[0], pts[2] ];
+
+/**
+ * Round a path cutting each corners.
+ */
+function vround_cut_path(pts,rs) =
+    vround_path_base(pts,rs,function(pts) vround_cut(pts));
+
+
+/**
+ * Round a corner with a bezier curve.
+ */
+function vround_bezier(pts) =
+    let(n = $fn>0.1 ? $fn : 10)
+    vbezier3_pts(pts,n);
+
+/**
+ * Round a path with bezier curves.
+ */
+function vround_bezier_path(pts,rs) =
+    vround_path_base(pts,rs,function(pts) vround_bezier(pts));
+
+/**
+ * Shorcut for 'vround_bezier_path'
+ * Example:
+ * > base = [ [0,0], [20,0], [20,20], [10,30] ];
+ * > pts = vround_path(base, [1,[5,2],[5,10],5], $fn=5);
+ * > vduplicate_simple(v2dto3d(pts)) sphere();
+ * > vblue() vduplicate_simple(v2dto3d(base)) sphere();
+ * > polygon(pts);
+ */
+function vround_path(pts,rs) =
+    vround_bezier_path(pts,rs);

@@ -124,6 +124,7 @@ function vindexes(v, start=0, end=0, inc=1) =
  *   v - vector.
  *   inc - increment (element skipped), if negative, multiplier.
  *   start - number of index removed at begining
+ *         if negative, start before the end
  *   end - if positive, number of element kept
  *         if negative, number of index removed from end
  * Returns:
@@ -135,7 +136,10 @@ function vindexes(v, start=0, end=0, inc=1) =
  * > echo(vindexes([1,2,3],1,-1,-2)); // outputs [1,2,2,3]
  */
 function vcopy(vs, start=0, end=0, inc=1) = [
-    for (i=vindexes(vs,start,end,inc)) vs[i] ];
+    for (i=vindexes(vs,start,end,inc))
+        let(i=i%len(vs))
+        i<0 ? vs[len(vs)+i] : vs[i]
+    ];
 
 /**
  * Function: vabs

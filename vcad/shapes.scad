@@ -246,6 +246,30 @@ module vreinfor(size, e=0, x,y,z, ex, ez) {
 }
 
 /**
+ * Module: vextrude_path
+ * Extrude a path along z (or a vector)
+ * Parameters:
+ *   pts - 2D path
+ *   h - z extrusion if number
+ *       or a vector
+ * Example:
+ * > pts = [ [0,0], [0,10], [10,0] ];
+ * > vextrude_path(pts,20);
+ */
+module vextrude_path(pts, h) {
+    v = visnum(h) ? [0,0,h] : h;
+    n = len(pts);
+    points = [ for (p=pts) [p.x,p.y,0]
+             , for (p=pts) [p.x,p.y,0]+v
+             ];
+    faces = [  [ for (i=vindexes(pts)) i ]
+            ,  [ for (i=vindexes(pts)) 2*n-i-1 ]
+            ,  for (i=vindexes(pts)) [i+n, (i+1)%n+n, (i+1)%n, i]
+            ];
+    polyhedron(points=points, faces=faces,convexity=1);
+}
+
+/**
  * Module: vprism
  * ...
  * Parameters:

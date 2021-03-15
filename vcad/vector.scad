@@ -94,7 +94,7 @@ function vvunit(n=3,pos=0) = vvect(n,1,pos,0);
 
 /**
  * Fucntion: vvset
- * Set a element of <v> with <x>.
+ * Set an element of <v> with <x>.
  * If <x> is a vector, len(<x>) elements of v
  * are set by each elements of <x>.
  * Parameters:
@@ -149,8 +149,8 @@ function vnorm(v) = sqrt(v*v);
  * Example:
  * > echo(vdistance([[0,0],]1,1])); // outputs 1.41421
  */
-function vdistance(a,b) = vnorm(a-b);
-function vdist(a,b) = vnorm(a-b);
+function vdistance(a,b) = norm(a-b);
+function vdist(a,b) = norm(a-b);
 
 /**
  * Function: vdot
@@ -163,6 +163,11 @@ function vdist(a,b) = vnorm(a-b);
  * > echo(vdot([1,1], [2,2])); outputs 4
  */
 function vdot(a,b) = a*b;
+
+/**
+ * Determinant
+ */
+function vdet(a,b) = a.x*b.y-a.y*b.x;
 
 /**
  * Function: vnormalize
