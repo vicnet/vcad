@@ -246,7 +246,7 @@ module vreinfor(size, e=0, x,y,z, ex, ez) {
 }
 
 /**
- * Module: vextrude_path
+ * Module: vextrude_face
  * Extrude a path along z (or a vector)
  * Parameters:
  *   pts - 2D path
@@ -254,19 +254,55 @@ module vreinfor(size, e=0, x,y,z, ex, ez) {
  *       or a vector
  * Example:
  * > pts = [ [0,0], [0,10], [10,0] ];
- * > vextrude_path(pts,20);
+ * > vextrude_face(pts,20);
  */
-module vextrude_path(pts, h) {
+module vextrude_face(pts, h) {
     v = visnum(h) ? [0,0,h] : h;
-    n = len(pts);
-    points = [ for (p=pts) [p.x,p.y,0]
-             , for (p=pts) [p.x,p.y,0]+v
-             ];
-    faces = [  [ for (i=vindexes(pts)) i ]
-            ,  [ for (i=vindexes(pts)) 2*n-i-1 ]
-            ,  for (i=vindexes(pts)) [i+n, (i+1)%n+n, (i+1)%n, i]
-            ];
-    polyhedron(points=points, faces=faces,convexity=1);
+    bottom = len(pts[0])==3 ? pts : v2dto3d(pts);
+    top = [ for (p=bottom) p+v ];
+    vpoly_2faces(bottom,top);
+}
+
+/**
+ * Module: vpoly_2faces
+ * Create a polyhedron from two faces
+ * (define by a list of points).
+ * The two faces should have the same number of points.
+ * Parameters:
+ *   bottom - the bottom faces
+ *   top - the top faces
+ * Example:
+ * > bottom= [ [0,0,0], [0,10,0], [10,0,0] ];
+ * > top = [ [3,3,25], [3,7,20], [7,3,18] ];
+ * > vpoly_2faces(top,bottom);
+ */
+module vpoly_2faces(bottom,top) {
+    vpoly_faces([bottom,top]);
+}
+
+/**
+ * Module: vpoly_faces
+ * Create a polyhedron from n faces
+ * The faces should have the same number of points.
+ * Parameters:
+ *   faces - the faces
+ * Example:
+ * > bottom= [ [0,0,0], [0,10,0], [10,0,0] ];
+ * > top = [ [3,3,25], [3,7,20], [7,3,18] ];
+ * > vpoly_faces([top,bottom]);
+ */
+module vpoly_faces(fcs) {
+    m = len(fcs); // face count
+    bottom = fcs[0];
+    n = len(bottom);
+    is = vindexes(bottom);
+    points = concat([for (face=fcs) each face]);
+    faces = [ [ for (i=is) i ]
+           ,  [ for (i=is) m*n-i-1 ]
+           ,  for (j=vrange(m-1,inc=n))
+                for (i=is) [i+n+j, (i+1)%n+n+j, (i+1)%n+j, i+j]
+          ];
+    polyhedron(points=points, faces=faces, convexity=2);
 }
 
 /**

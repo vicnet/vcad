@@ -48,7 +48,8 @@ module vhull2(ms, chamfer=true) {
  *   s - scale (scalar or vector or list of vector)
  *   t - twist (scalar or vector)
  * Example:
- * > 
+ * > vextrude_simple([[0,0,0],[0,0,50],[0,50,50]])
+ * >   sphere();
  */
 module vextrude_simple(path, s=1, t=0) {
     vhull2(vfollow_simple(path,s,t),true) children();

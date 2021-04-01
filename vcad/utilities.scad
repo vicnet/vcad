@@ -219,3 +219,16 @@ function v2dto3d(pts, z=0) =
 
 function v3dto2d(pts) =
     [ for (pt = pts) [pt.x, pt.y] ];
+
+/**
+ * Inverse a list.
+ * Parameters:
+ *   l - the list
+ * Returns:
+ *   An inverted list
+ * Example:
+ * > echo(vinverse([0,2,4])); // outputs [4,2,0]
+ */
+function vinverse(l) =
+    let(n=len(l))
+    [ for(i=[n-1:-1:0]) l[i] ];

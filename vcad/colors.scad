@@ -32,3 +32,23 @@ module vblue() {
 module vred() {
     color("red") children();
 }
+
+/**
+ * Module: vwhite()
+ * White color for children,
+ * Example:
+ * > vwite() square([2,3]);
+ */
+module vwhite() {
+    color("white") children();
+}
+
+/**
+ * Module: vgray()
+ * Gray color for children,
+ * Example:
+ * > vgray() square([2,3]);
+ */
+module vgray() {
+    color("gray") children();
+}

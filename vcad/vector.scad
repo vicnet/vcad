@@ -99,7 +99,8 @@ function vvunit(n=3,pos=0) = vvect(n,1,pos,0);
  * are set by each elements of <x>.
  * Parameters:
  *   v - base vector
- *   x - scalar or vector
+ *   e - scalar or vector
+ *   pos - position where <x> is set
  * Returns:
  *   v with elements replaced.
  * Example:
@@ -110,6 +111,22 @@ function vvset(v, e, pos=0) =
     visnum(e)
         ? [ for (i=vindexes(v)) i==pos ? e : v[i] ]
         : [ for (i=vindexes(v)) (i>=pos && i<pos+len(e)) ? e[i-pos] : v[i] ];
+
+/**
+ * Fucntion: vvget
+ * Get an element of <v> at <pos>.
+ * Parameters:
+ *   v - base vector
+ *   pos - scalar, even negative
+ * Returns:
+ *   element at <pos>
+ * Example:
+ * > echo(vvget([0,2,4],-1)); // outputs 4
+ */
+    
+function vvget(v, pos=0) =
+    let(n=len(v), p=pos%n)
+    v[(p+n)%n];
 
 /**
  * Function: vsum

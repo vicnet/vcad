@@ -319,3 +319,9 @@ function vround_bezier_path(pts,rs) =
  */
 function vround_path(pts,rs) =
     vround_bezier_path(pts,rs);
+
+/**
+ * Add <v> to each points.
+ */
+function vadd(pts,v) =
+    [ for (p=pts) p+v ];
